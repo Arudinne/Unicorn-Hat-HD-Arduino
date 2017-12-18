@@ -6,6 +6,6 @@ The goal of this code is to eventually create a library that will allow the Unic
 
 Pixel 0 is in the top right corner. Pixel 255 is in the bottom left corner.
 
-Tested on an Adafruit Feather NRF52, but should work on any thing to the best of my Knowledge.
+Tested on an Adafruit Feather NRF52, but should work on most Arduino Compatible devices.
 
 Adapted from this Gist: https://gist.github.com/emoryy/24899c8dee7112d62e4adfbdaaa4826a
