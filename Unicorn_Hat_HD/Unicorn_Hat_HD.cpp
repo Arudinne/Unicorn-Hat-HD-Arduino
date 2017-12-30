@@ -19,13 +19,27 @@ void Unicorn_Hat_HD::show(void)
   SPI.beginTransaction(SPISettings(9000000, MSBFIRST, SPI_MODE0));
   digitalWrite(_slaveSelectPin, LOW);
   SPI.transfer(0x72); 
-  for (int x = 0; x < 16; x++) {
+
+// Reverse the X axis so we are displaying pixels from left to right
+  
+  for (int x = 15; x >= 0; x--) {
     for (int y = 0; y < 16; y++) {
       for (int c = 0; c < 3; c++) {
         SPI.transfer(_buff[x][y][c]);  
       }
     }
   }
+
+  /* 
+ for (int x = 0; x < 16; x++) {
+    for (int y = 0; y < 16; y++) {
+      for (int c = 0; c < 3; c++) {
+        SPI.transfer(_buff[x][y][c]);  
+      }
+    }
+  }
+*/
+
   digitalWrite(_slaveSelectPin, HIGH);
   SPI.endTransaction();
 }
