@@ -1,3 +1,13 @@
+/*-------------------------------------------------------------------------
+  Arduino library to control the Pimoroni Unicorn Hat HD. 
+  
+  The Goal of this library is to allow the user to control the Unicorn Hat HD
+  as if it were a strand of "NeoPixel or "DotStar" LEDs.
+  
+  Written By Brandon C. Allen
+  
+  -------------------------------------------------------------------------*/
+
 #include "Arduino.h"
 #include "SPI.h"
 #include "Unicorn_Hat_HD.h"
@@ -14,23 +24,39 @@ digitalWrite(_slaveSelectPin, HIGH);
 SPI.begin();	
 }
 
+
+// Convert separate R,G,B into packed 32-bit RGB color.
+uint32_t Unicorn_Hat_HD::Color(uint8_t r, uint8_t g, uint8_t b) {
+  return ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
+}
+
+// Transfer data to the LED Matrix
 void Unicorn_Hat_HD::show(void)
 {
-  SPI.beginTransaction(SPISettings(9000000, MSBFIRST, SPI_MODE0));
-  digitalWrite(_slaveSelectPin, LOW);
-  SPI.transfer(0x72); 
-
-// Reverse the X axis so we are displaying pixels from left to right
-  
-  for (int x = 15; x >= 0; x--) {
-    for (int y = 0; y < 16; y++) {
-      for (int c = 0; c < 3; c++) {
-        SPI.transfer(_buff[x][y][c]);  
-      }
+	uint16_t b16 = (uint16_t)brightness;
+	if(brightness) {
+		for (int i=0; i <= 15; i++){
+			for (int j=0; j <= 15; j++){
+				_buff[i][j][0] = (_buff[i][j][0] *b16 >>8);
+				_buff[i][j][1] = (_buff[i][j][1] *b16 >>8);
+				_buff[i][j][2] = (_buff[i][j][2] *b16 >>8);
+			}
+		}			
     }
-  }
+	else{} 
+				
+	SPI.beginTransaction(SPISettings(9000000, MSBFIRST, SPI_MODE0));
+	digitalWrite(_slaveSelectPin, LOW);
+	SPI.transfer(0x72);
+	for (int x = 15; x >= 0; x--) { // Reverse the X axis so we are displaying pixels from left to right
+			for (int y = 0; y < 16; y++) {
+				for (int c = 0; c < 3; c++) {
+					SPI.transfer(_buff[x][y][c]);
+				}
+			}
+		}
 
-  /* 
+/* 
  for (int x = 0; x < 16; x++) {
     for (int y = 0; y < 16; y++) {
       for (int c = 0; c < 3; c++) {
@@ -49,6 +75,7 @@ void Unicorn_Hat_HD::clear()
 	memset(_buff, 0, sizeof _buff);
 }
 
+// Set pixel color from separate R,G,B components:
 void Unicorn_Hat_HD::setPixelColor(uint8_t n, uint8_t r, uint8_t g, uint8_t b)
 {
   uint8_t y;
@@ -173,6 +200,7 @@ void Unicorn_Hat_HD::setPixelColor(uint8_t n, uint8_t r, uint8_t g, uint8_t b)
   }
 }
 
+// Set pixel color from 'packed' 32-bit RGB color:
 void Unicorn_Hat_HD::setPixelColor(uint8_t n, uint32_t c)
 {
   uint8_t y;
@@ -295,4 +323,9 @@ void Unicorn_Hat_HD::setPixelColor(uint8_t n, uint32_t c)
 	  case 256:
 		break;
   }
+}
+
+void Unicorn_Hat_HD::setBrightness(uint8_t b) 
+{
+  brightness = b + 1;
 }
