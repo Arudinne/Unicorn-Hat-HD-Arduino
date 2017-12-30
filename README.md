@@ -10,4 +10,4 @@ Pixel 0 is in the top right corner. Pixel 255 is in the bottom left corner.
 
 Tested on an Adafruit Feather NRF52, but should work on most Arduino Compatible devices.
 
-Adapted from this Gist: https://gist.github.com/emoryy/24899c8dee7112d62e4adfbdaaa4826a and the Adafruit DotStar strandtest example.
+Adapted from this Gist: https://gist.github.com/emoryy/24899c8dee7112d62e4adfbdaaa4826a and the Adafruit NeoPixel Library.
