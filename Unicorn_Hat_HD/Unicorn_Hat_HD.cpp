@@ -37,21 +37,29 @@ void Unicorn_Hat_HD::show(void)
 	if(brightness) {
 		for (int i=0; i <= 15; i++){
 			for (int j=0; j <= 15; j++){
-				_buff[i][j][0] = (_buff[i][j][0] *b16 >>8);
-				_buff[i][j][1] = (_buff[i][j][1] *b16 >>8);
-				_buff[i][j][2] = (_buff[i][j][2] *b16 >>8);
+				_buff2[i][j][0] = (_buff[i][j][0] *b16 >>8);
+				_buff2[i][j][1] = (_buff[i][j][1] *b16 >>8);
+				_buff2[i][j][2] = (_buff[i][j][2] *b16 >>8);
 			}
 		}			
     }
-	else{} 
+	else{
+		for (int i=0; i <= 15; i++){
+			for (int j=0; j <= 15; j++){
+				_buff2[i][j][0] = (_buff[i][j][0]);
+				_buff2[i][j][1] = (_buff[i][j][1]);
+				_buff2[i][j][2] = (_buff[i][j][2]);
+			}
+		}
+	} 
 				
-	SPI.beginTransaction(SPISettings(9000000, MSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
 	digitalWrite(_slaveSelectPin, LOW);
 	SPI.transfer(0x72);
 	for (int x = 15; x >= 0; x--) { // Reverse the X axis so we are displaying pixels from left to right
 			for (int y = 0; y < 16; y++) {
 				for (int c = 0; c < 3; c++) {
-					SPI.transfer(_buff[x][y][c]);
+					SPI.transfer(_buff2[x][y][c]);
 				}
 			}
 		}
