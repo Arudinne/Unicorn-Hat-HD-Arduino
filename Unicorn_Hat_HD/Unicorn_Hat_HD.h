@@ -17,6 +17,7 @@ class Unicorn_Hat_HD
   private:
     uint8_t _slaveSelectPin;
     uint8_t _buff[16][16][3];
+	uint8_t _buff2[16][16][3];
 	uint8_t brightness;
 };
 #endif
