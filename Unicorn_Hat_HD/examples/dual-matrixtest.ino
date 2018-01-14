@@ -4,11 +4,11 @@
 const int slaveSelectPinA = 7;
 const int slaveSelectPinB = 27;
 
-Unicorn_Hat_HD matrixA = Unicorn_Hat_HD(slaveSelectPinA);
-Unicorn_Hat_HD matrixB = Unicorn_Hat_HD(slaveSelectPinB);
+Unicorn_Hat_HD matrixA = Unicorn_Hat_HD(slaveSelectPinA, 0);
+Unicorn_Hat_HD matrixB = Unicorn_Hat_HD(slaveSelectPinB, 0);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   matrixA.begin();
   matrixB.begin();
   
