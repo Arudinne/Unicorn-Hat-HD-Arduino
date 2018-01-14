@@ -12,10 +12,11 @@
 #include "SPI.h"
 #include "Unicorn_Hat_HD.h"
 
-Unicorn_Hat_HD::Unicorn_Hat_HD(uint8_t slaveSelectPin)
+Unicorn_Hat_HD::Unicorn_Hat_HD(uint8_t slaveSelectPin, uint16_t rotation)
 {
 	pinMode(slaveSelectPin, OUTPUT);
 	_slaveSelectPin = slaveSelectPin;
+	_rotation = rotation;
 }	
 
 void Unicorn_Hat_HD::begin(void)
@@ -56,24 +57,46 @@ void Unicorn_Hat_HD::show(void)
 	SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0));
 	digitalWrite(_slaveSelectPin, LOW);
 	SPI.transfer(0x72);
-	for (int x = 15; x >= 0; x--) { // Reverse the X axis so we are displaying pixels from left to right
+	
+	switch(_rotation)
+	{
+		case 0 ... 89:
+		for (int x = 15; x >= 0; x--) {
 			for (int y = 0; y < 16; y++) {
 				for (int c = 0; c < 3; c++) {
 					SPI.transfer(_buff2[x][y][c]);
 				}
 			}
 		}
-
-/* 
- for (int x = 0; x < 16; x++) {
-    for (int y = 0; y < 16; y++) {
-      for (int c = 0; c < 3; c++) {
-        SPI.transfer(_buff[x][y][c]);  
-      }
-    }
-  }
-*/
-
+		break;
+		case 90 ... 179:
+		for (int y = 0; y < 16; y++) {
+			for (int x = 0; x < 16; x++) {
+				for (int c = 0; c < 3; c++) {
+					SPI.transfer(_buff2[x][y][c]);
+				}
+			}
+		}
+		break;
+		case 180 ... 259:
+		for (int x = 15; x >= 0; x--) {
+			for (int y = 15; y >= 0; y--) {
+				for (int c = 0; c < 3; c++) {
+					SPI.transfer(_buff2[x][y][c]);  
+				}
+			}
+		}
+		break;
+		case 270 ... 360:
+		for (int y = 15; y >= 0; y--) {
+			for (int x = 15; x >= 0; x--) {
+				for (int c = 0; c < 3; c++) {
+					SPI.transfer(_buff2[x][y][c]);  
+				}
+			}
+		}
+		break;
+	}
   digitalWrite(_slaveSelectPin, HIGH);
   SPI.endTransaction();
 }
