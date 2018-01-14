@@ -2,7 +2,7 @@
 
 First example Code to test the Pimoroni Unicorn Hat HD with an Arduino.
 
-The goal of this code is to eventually create a library that will allow the Unicorn Hat HD to be controlled as if it were a 16x16 array of NeoPixel or DotStar LEDs (more or less).
+The goal of this code is to allow the Unicorn Hat HD to be controlled as if it were a 16x16 of NeoPixel or DotStar LEDs (or as if were a 256 LED strand).
 
 Currently it displays the same test pattern as the Adafruit DotStar strand test.
 
