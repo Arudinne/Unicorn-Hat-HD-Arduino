@@ -3,10 +3,10 @@
 
 const int slaveSelectPinA = 7;
 
-Unicorn_Hat_HD matrixA = Unicorn_Hat_HD(slaveSelectPinA);
+Unicorn_Hat_HD matrixA = Unicorn_Hat_HD(slaveSelectPinA, 0);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   matrixA.begin();
   
 }
